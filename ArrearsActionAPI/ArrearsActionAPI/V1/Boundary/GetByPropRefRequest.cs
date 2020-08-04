@@ -7,6 +7,6 @@ namespace ArrearsActionAPI.V1.Boundary
 {
     public class GetByPropRefRequest
     {
-        public string propertyRef { get; set; }
+        public string PropertyRef { get; set; }
     }
 }

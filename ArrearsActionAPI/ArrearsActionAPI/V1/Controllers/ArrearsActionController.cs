@@ -20,7 +20,7 @@ namespace ArrearsActionAPI.V1.Controllers
         }
 
         [HttpGet]
-        [Route("property-ref/{propertyRef}")]
+        [Route("property-ref/{PropertyRef}")]
         public IActionResult GetByPropRef([FromRoute] GetByPropRefRequest request)
         {
             return Ok();
