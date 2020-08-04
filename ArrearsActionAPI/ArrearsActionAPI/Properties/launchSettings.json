@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Arrears-Action-API": {
+    "ArrearsActionAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

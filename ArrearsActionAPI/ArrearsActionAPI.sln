@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrears-Action-API", "Arrears-Action-API\Arrears-Action-API.csproj", "{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrearsActionAPI", "ArrearsActionAPI\ArrearsActionAPI.csproj", "{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

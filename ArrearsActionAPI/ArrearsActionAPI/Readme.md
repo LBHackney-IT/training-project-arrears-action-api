@@ -63,12 +63,12 @@ If already installed check if new version is available.
 
 Execute unit tests
 ```
-    cd "Arrears-Action-API/test/Arrears-Action-API.Tests"
+    cd "ArrearsActionAPI/test/ArrearsActionAPI.Tests"
     dotnet test
 ```
 
 Deploy application
 ```
-    cd "Arrears-Action-API/src/Arrears-Action-API"
+    cd "ArrearsActionAPI/src/ArrearsActionAPI"
     dotnet lambda deploy-serverless
 ```

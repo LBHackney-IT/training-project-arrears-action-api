@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArrearsActionAPI.V1.Boundary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Arrears_Action_API.Controllers
+namespace ArrearsActionAPI.Controllers
 {
     [Route("api/v1/ArrearsActions")]
     [ApiController]

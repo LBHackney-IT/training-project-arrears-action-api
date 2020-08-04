@@ -9,7 +9,7 @@
   "region": "us-west-2",
   "configuration": "Release",
   "framework": "netcoreapp2.1",
-  "s3-prefix": "Arrears-Action-API/",
+  "s3-prefix": "ArrearsActionAPI/",
   "template": "serverless.template",
   "template-parameters": "ShouldCreateBucket=true;BucketName="
 }
