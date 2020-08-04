@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrearsActionAPI", "ArrearsActionAPI\ArrearsActionAPI.csproj", "{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrearsActionAPI.UnitTests", "ArrearsActionAPI.UnitTests\ArrearsActionAPI.UnitTests.csproj", "{4C2DC952-D901-4EA1-82EA-14CCD4F6769A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0DF58E4-9BC5-45AF-BE25-5188C83C314F} = {A0DF58E4-9BC5-45AF-BE25-5188C83C314F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0DF58E4-9BC5-45AF-BE25-5188C83C314F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C2DC952-D901-4EA1-82EA-14CCD4F6769A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C2DC952-D901-4EA1-82EA-14CCD4F6769A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C2DC952-D901-4EA1-82EA-14CCD4F6769A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C2DC952-D901-4EA1-82EA-14CCD4F6769A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

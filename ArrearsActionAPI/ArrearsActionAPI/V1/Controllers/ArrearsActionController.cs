@@ -6,7 +6,7 @@ using ArrearsActionAPI.V1.Boundary;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ArrearsActionAPI.Controllers
+namespace ArrearsActionAPI.V1.Controllers
 {
     [Route("api/v1/ArrearsActions")]
     [ApiController]
