@@ -18,5 +18,12 @@ namespace ArrearsActionAPI.Controllers
         {
             return Ok($"It's working?! Uhm... Hello, {name}!");
         }
+
+        [HttpGet]
+        [Route("property-ref/{propertyRef}")]
+        public IActionResult GetByPropRef([FromRoute] GetByPropRefRequest request)
+        {
+            return Ok();
+        }
     }
 }
