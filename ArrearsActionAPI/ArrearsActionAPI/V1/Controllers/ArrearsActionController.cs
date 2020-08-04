@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ArrearsActionAPI.V1.Boundary;
+using ArrearsActionAPI.V1.Usecases;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,13 @@ namespace ArrearsActionAPI.V1.Controllers
     [ApiController]
     public class ArrearsActionsController : ControllerBase
     {
+        private readonly IArrearsActionUsecase _arrearsActionUsecase;
+
+        public ArrearsActionsController(IArrearsActionUsecase arrearsActionUsecase)
+        {
+            _arrearsActionUsecase = arrearsActionUsecase;
+        }
+
         [HttpGet]
         [Route("Hello/Name/{name}")]
         public IActionResult HelloSomeone([FromRoute] string name)
@@ -21,8 +29,10 @@ namespace ArrearsActionAPI.V1.Controllers
 
         [HttpGet]
         [Route("property-ref/{PropertyRef}")]
-        public IActionResult GetByPropRef([FromRoute] GetByPropRefRequest request)
+        public IActionResult GetAractionsByPropRef([FromRoute] GetAractionsByPropRefRequest request)
         {
+            _arrearsActionUsecase.ExecuteGet(request);
+
             return Ok();
         }
     }
