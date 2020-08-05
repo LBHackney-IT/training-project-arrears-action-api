@@ -9,7 +9,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Build
-          command: docker-compose build arrears-action-api-unit-tests .
+          command: docker-compose build arrears-action-api-unit-tests
       - run:
           name: Run tests
           command: docker-compose run arrears-action-api-unit-tests
