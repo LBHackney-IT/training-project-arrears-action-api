@@ -35,5 +35,18 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             // assert
             _mockUsecase.Verify(u => u.ExecuteGet(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
         }
+
+        [Test]
+        public void Given_a_valid_request__When_GetByPropRef_ArrearsActionController_method_is_called__Then_controller_calls_the_usecase_with_the_same_request_object()
+        {
+            // arrange
+            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
+
+            // act
+            _controllerUnderTest.GetAractionsByPropRef(request);
+
+            // assert
+            _mockUsecase.Verify(u => u.ExecuteGet(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
+        }
     }
 }
