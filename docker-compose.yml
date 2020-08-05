@@ -1,0 +1,8 @@
+version: "3.2"
+
+services:
+  arrears-action-api-tests:
+    image: arrears-action-api-test
+    build:
+      context: .
+      dockerfile: ArrearsActionAPI.UnitTests/Dockerfile

@@ -1,0 +1,20 @@
+version: 2.1
+
+jobs:
+  check:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: build
+          command: docker-compose build arrears-action-api-test .
+      - run:
+          name: Run tests
+          command: docker-compose run arrears-action-api-test
+
+workflows:
+  build-and-test:
+      jobs:
+      - check
