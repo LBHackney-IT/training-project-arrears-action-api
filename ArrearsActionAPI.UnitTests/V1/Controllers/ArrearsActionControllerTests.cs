@@ -6,6 +6,7 @@ using ArrearsActionAPI.V1.Controllers;
 using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Usecases;
 using Moq;
+using Bogus;
 
 namespace ArrearsActionAPI.UnitTests.V1.Controllers
 {
@@ -22,13 +23,11 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _controllerUnderTest = new ArrearsActionsController(_mockUsecase.Object);
         }
 
-        [TestCase("assa")]
-        [TestCase("fff")]
-        [TestCase("123")]
-        public void Given_a_valid_request__When_GetByPropRef_ArrearsActionController_method_is_called__Then_controller_calls_the_usecase(string propRef)
+        [Test]
+        public void Given_a_valid_request__When_GetByPropRef_ArrearsActionController_method_is_called__Then_controller_calls_the_usecase()
         {
             // arrange
-            var request = new GetAractionsByPropRefRequest() { PropertyRef = propRef };
+            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
 
             // act
             _controllerUnderTest.GetAractionsByPropRef(request);
