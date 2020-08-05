@@ -3,14 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArrearsActionAPI.V1.Gateways;
 
 namespace ArrearsActionAPI.V1.Usecases
 {
     public class ArrearsActionUsecase : IArrearsActionUsecase
     {
+        private readonly IArrearsActionGateway _arrearsActionGateway;
+
+        public ArrearsActionUsecase(IArrearsActionGateway arrearsActionGateway)
+        {
+            _arrearsActionGateway = arrearsActionGateway;
+        }
+
         public GetAractionsByPropRefResponse ExecuteGet(GetAractionsByPropRefRequest request)
         {
-            throw new NotImplementedException();
+            _arrearsActionGateway.GetByPropRef(new GetAractionsByPropRefRequest());
+
+            return null;
         }
     }
 }

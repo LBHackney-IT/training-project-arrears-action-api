@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArrearsActionAPI.V1.Gateways;
 using ArrearsActionAPI.V1.Usecases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace ArrearsActionAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped<IArrearsActionUsecase, ArrearsActionUsecase>();
+            services.AddScoped<IArrearsActionGateway, ArrearsActionGateway>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
