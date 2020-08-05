@@ -8,11 +8,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: build
-          command: docker-compose build arrears-action-api-test .
+          name: Build
+          command: docker-compose build arrears-action-api-unit-tests .
       - run:
           name: Run tests
-          command: docker-compose run arrears-action-api-test
+          command: docker-compose run arrears-action-api-unit-tests
 
 workflows:
   build-and-test:
