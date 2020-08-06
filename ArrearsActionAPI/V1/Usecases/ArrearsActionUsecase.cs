@@ -16,7 +16,7 @@ namespace ArrearsActionAPI.V1.Usecases
             _arrearsActionGateway = arrearsActionGateway;
         }
 
-        public GetAractionsByPropRefResponse ExecuteGet(GetAractionsByPropRefRequest request)
+        public GetAractionsByPropRefResponse GetByPropRef(GetAractionsByPropRefRequest request)
         {
             _arrearsActionGateway.GetByPropRef(new GetAractionsByPropRefRequest());
 

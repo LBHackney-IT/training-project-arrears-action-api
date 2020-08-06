@@ -8,6 +8,6 @@ namespace ArrearsActionAPI.V1.Usecases
 {
     public interface IArrearsActionUsecase
     {
-        GetAractionsByPropRefResponse ExecuteGet(GetAractionsByPropRefRequest request);
+        GetAractionsByPropRefResponse GetByPropRef(GetAractionsByPropRefRequest request);
     }
 }

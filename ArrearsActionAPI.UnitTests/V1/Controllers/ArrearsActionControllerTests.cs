@@ -33,7 +33,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _controllerUnderTest.GetAractionsByPropRef(request);
 
             // assert
-            _mockUsecase.Verify(u => u.ExecuteGet(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
+            _mockUsecase.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _controllerUnderTest.GetAractionsByPropRef(request);
 
             // assert
-            _mockUsecase.Verify(u => u.ExecuteGet(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
+            _mockUsecase.Verify(u => u.GetByPropRef(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
         }
     }
 }

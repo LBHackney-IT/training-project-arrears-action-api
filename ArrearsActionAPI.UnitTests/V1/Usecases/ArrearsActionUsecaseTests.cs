@@ -23,13 +23,13 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
         }
 
         [Test]
-        public void When_ExecuteGet_ArrearsActionUsecase_method_is_called__Then_usecase_calls_the_gateway()
+        public void When_GetByPropRef_ArrearsActionUsecase_method_is_called__Then_usecase_calls_the_gateway()
         {
             // arrange
             var request = TestHelper.Generate_GetAractionsByPropRefRequest();
 
             // act
-            _usecaseUnderTest.ExecuteGet(request); //rename it...
+            _usecaseUnderTest.GetByPropRef(request); //rename it...
 
             // assert
             _mockGateway.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
