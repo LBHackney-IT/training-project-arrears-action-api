@@ -31,9 +31,9 @@ namespace ArrearsActionAPI.V1.Controllers
         [Route("property-ref/{PropertyRef}")]
         public IActionResult GetAractionsByPropRef([FromRoute] GetAractionsByPropRefRequest request)
         {
-            _arrearsActionUsecase.GetByPropRef(request);
+            var usecase_result = _arrearsActionUsecase.GetByPropRef(request);
 
-            return Ok();
+            return Ok(usecase_result);
         }
     }
 }
