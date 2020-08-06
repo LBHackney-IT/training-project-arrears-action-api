@@ -29,10 +29,23 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
             var request = TestHelper.Generate_GetAractionsByPropRefRequest();
 
             // act
-            _usecaseUnderTest.GetByPropRef(request); //rename it...
+            _usecaseUnderTest.GetByPropRef(request);
 
             // assert
             _mockGateway.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
+        }
+
+        [Test]
+        public void Given_a_request_object_When_GetByPropRef_ArrearsActionUsecase_method_is_called__Then_usecase_calls_the_gateway_with_the_same_request_object()
+        {
+            // arrange
+            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
+
+            // act
+            _usecaseUnderTest.GetByPropRef(request);
+
+            // assert
+            _mockGateway.Verify(u => u.GetByPropRef(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
         }
     }
 }

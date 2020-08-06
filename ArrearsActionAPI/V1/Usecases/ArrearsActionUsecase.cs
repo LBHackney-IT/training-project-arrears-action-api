@@ -18,7 +18,7 @@ namespace ArrearsActionAPI.V1.Usecases
 
         public GetAractionsByPropRefResponse GetByPropRef(GetAractionsByPropRefRequest request)
         {
-            _arrearsActionGateway.GetByPropRef(new GetAractionsByPropRefRequest());
+            _arrearsActionGateway.GetByPropRef(request);
 
             return null;
         }
