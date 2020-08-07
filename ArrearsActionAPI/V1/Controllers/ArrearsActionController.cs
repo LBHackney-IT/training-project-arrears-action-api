@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Usecases;
+using ArrearsActionAPI.V1.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +15,12 @@ namespace ArrearsActionAPI.V1.Controllers
     public class ArrearsActionsController : ControllerBase
     {
         private readonly IArrearsActionUsecase _arrearsActionUsecase;
+        private readonly IGetAractionsByPropRefRequestValidator _getByPropRefValidator;
 
-        public ArrearsActionsController(IArrearsActionUsecase arrearsActionUsecase)
+        public ArrearsActionsController(IArrearsActionUsecase arrearsActionUsecase, IGetAractionsByPropRefRequestValidator getByPropRefValidator)
         {
             _arrearsActionUsecase = arrearsActionUsecase;
+            _getByPropRefValidator = getByPropRefValidator;
         }
 
         [HttpGet]
@@ -31,6 +34,8 @@ namespace ArrearsActionAPI.V1.Controllers
         [Route("property-ref/{PropertyRef}")]
         public IActionResult GetAractionsByPropRef([FromRoute] GetAractionsByPropRefRequest request)
         {
+            _getByPropRefValidator.Validate(request);
+
             var usecase_result = _arrearsActionUsecase.GetByPropRef(request);
 
             return Ok(usecase_result);

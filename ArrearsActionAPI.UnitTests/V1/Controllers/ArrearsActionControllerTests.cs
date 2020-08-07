@@ -7,6 +7,7 @@ using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Usecases;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
+using ArrearsActionAPI.V1.Validators;
 
 namespace ArrearsActionAPI.UnitTests.V1.Controllers
 {
@@ -15,12 +16,14 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
     {
         private ArrearsActionsController _controllerUnderTest;
         private Mock<IArrearsActionUsecase> _mockUsecase;
+        private Mock<IGetAractionsByPropRefRequestValidator> _mockGetByPropRefValidator;
 
         [SetUp]
         public void Setup()
         {
             _mockUsecase = new Mock<IArrearsActionUsecase>();
-            _controllerUnderTest = new ArrearsActionsController(_mockUsecase.Object);
+            _mockGetByPropRefValidator = new Mock<IGetAractionsByPropRefRequestValidator>();
+            _controllerUnderTest = new ArrearsActionsController(_mockUsecase.Object, _mockGetByPropRefValidator.Object);
         }
 
         [Test]
@@ -80,5 +83,37 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             var response_value = (response as ObjectResult)?.Value;
             Assert.AreSame(usecase_result, response_value);
         }
+
+        #region Validator - Controller tests
+
+        [Test]
+        public void Given_a_request_When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_calls_GetAractionsByPropRefRequestValidator()
+        {
+            // arrange
+            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns<GetAractionsByPropRefResponse>(null);
+
+            // act
+            _controllerUnderTest.GetAractionsByPropRef(request);
+
+            // assert
+            _mockGetByPropRefValidator.Verify(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
+        }
+
+        [Test]
+        public void Given_a_request_When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_calls_GetAractionsByPropRefRequestValidator_with_the_same_request_object()
+        {
+            // arrange
+            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns<GetAractionsByPropRefResponse>(null);
+
+            // act
+            _controllerUnderTest.GetAractionsByPropRef(request);
+
+            // assert
+            _mockGetByPropRefValidator.Verify(v => v.Validate(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
+        } 
+
+        #endregion
     }
 }
