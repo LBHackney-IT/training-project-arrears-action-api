@@ -1,10 +1,8 @@
 ﻿using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Validators;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using FluentValidation.TestHelper;
+using ArrearsActionAPI.V1.Helpers;
 
 namespace ArrearsActionAPI.UnitTests.V1.Validators
 {
@@ -21,11 +19,12 @@ namespace ArrearsActionAPI.UnitTests.V1.Validators
 
         #region Validity Checks
 
-        [Test]
-        public void Given_a_request_with_an_empty_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_an_error()
+        [TestCase("")]
+        [TestCase(" ")]
+        public void Given_a_request_with_an_empty_or_whitespace_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_an_error(string test_prop_ref)
         {
             // arrange
-            var request = new GetAractionsByPropRefRequest() { PropertyRef = "" };
+            var request = new GetAractionsByPropRefRequest() { PropertyRef = test_prop_ref };
 
             // act, assert
             _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request);
@@ -55,14 +54,15 @@ namespace ArrearsActionAPI.UnitTests.V1.Validators
 
         #region Error Message Checks
 
-        [Test]
-        public void Given_a_request_with_an_empty_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_correct_error_message()
+        [TestCase("")]
+        [TestCase(" ")]
+        public void Given_a_request_with_an_empty_or_whitespace_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_correct_error_message(string test_prop_ref)
         {
             // arrange
-            var request = new GetAractionsByPropRefRequest() { PropertyRef = "" };
+            var request = new GetAractionsByPropRefRequest() { PropertyRef = test_prop_ref };
 
             // act, assert
-            _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request).WithErrorMessage("PropertyRef must not be empty.");
+            _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request).WithErrorMessage(ErrorMessagesFormatter.FieldIsWhiteSpaceOrEmpty("PropertyRef"));
         }
 
         [Test]
@@ -72,24 +72,29 @@ namespace ArrearsActionAPI.UnitTests.V1.Validators
             var request = new GetAractionsByPropRefRequest() { PropertyRef = null };
 
             // act, assert
-            _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request).WithErrorMessage("PropertyRef must be provided.");
+            _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request).WithErrorMessage(ErrorMessagesFormatter.FieldIsNullMessage("PropertyRef"));
         }
 
         [Test]
-        public void Given_a_request_with_a_null_or_empty_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_only_one_corresponding_error_message()
+        public void Given_a_request_with_a_null_or_empty_or_whitespace_propertyRef__When_GetAractionsByPropRefRequestValidator_is_called__Then_it_returns_only_one_corresponding_error_message()
         {
             // arrange
             var request_empty = new GetAractionsByPropRefRequest() { PropertyRef = "" };
+            var request_whitespace = new GetAractionsByPropRefRequest() { PropertyRef = " " };
             var request_null = new GetAractionsByPropRefRequest() { PropertyRef = null };
 
             // act, assert
             _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request_empty)
-                .WithErrorMessage("PropertyRef must not be empty.")
-                .WithoutErrorMessage("PropertyRef must be provided.");
+                .WithErrorMessage(ErrorMessagesFormatter.FieldIsWhiteSpaceOrEmpty("PropertyRef"))
+                .WithoutErrorMessage(ErrorMessagesFormatter.FieldIsNullMessage("PropertyRef"));
+
+            _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request_whitespace)
+                .WithErrorMessage(ErrorMessagesFormatter.FieldIsWhiteSpaceOrEmpty("PropertyRef"))
+                .WithoutErrorMessage(ErrorMessagesFormatter.FieldIsNullMessage("PropertyRef"));
 
             _validatorUnderTest.ShouldHaveValidationErrorFor(r => r.PropertyRef, request_null)
-                .WithErrorMessage("PropertyRef must be provided.")
-                .WithoutErrorMessage("PropertyRef must not be empty.");
+                .WithErrorMessage(ErrorMessagesFormatter.FieldIsNullMessage("PropertyRef"))
+                .WithoutErrorMessage(ErrorMessagesFormatter.FieldIsWhiteSpaceOrEmpty("PropertyRef"));
         }
 
         #endregion

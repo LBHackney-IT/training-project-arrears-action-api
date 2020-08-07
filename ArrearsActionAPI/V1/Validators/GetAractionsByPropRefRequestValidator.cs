@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ArrearsActionAPI.V1.Boundary;
+﻿using ArrearsActionAPI.V1.Boundary;
+using ArrearsActionAPI.V1.Helpers;
 using FluentValidation;
 
 namespace ArrearsActionAPI.V1.Validators
@@ -14,8 +11,8 @@ namespace ArrearsActionAPI.V1.Validators
             ValidatorOptions.Global.CascadeMode = CascadeMode.StopOnFirstFailure;
 
             RuleFor(request => request.PropertyRef)
-                .NotNull().WithMessage("PropertyRef must be provided.")
-                .NotEmpty().WithMessage("PropertyRef must not be empty.");
+                .NotNull().WithMessage(ErrorMessagesFormatter.FieldIsNullMessage("PropertyRef"))
+                .NotEmpty().WithMessage(ErrorMessagesFormatter.FieldIsWhiteSpaceOrEmpty("PropertyRef"));
         }
     }
 }

@@ -3,9 +3,6 @@ using ArrearsActionAPI.V1.Gateways;
 using ArrearsActionAPI.V1.Usecases;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ArrearsActionAPI.UnitTests.V1.Usecases
 {
