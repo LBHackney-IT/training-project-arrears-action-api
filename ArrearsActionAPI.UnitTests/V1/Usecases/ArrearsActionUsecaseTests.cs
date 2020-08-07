@@ -67,7 +67,6 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
         {
             // arrange
             var request = TestHelper.Generate_GetAractionsByPropRefRequest();
-            _mockGateway.Setup(g => g.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns<GetAractionsByPropRefResponse>(null);
 
             // act
             var usecase_response = _usecaseUnderTest.GetByPropRef(request);
