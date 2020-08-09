@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FluentValidation.AspNetCore;
+using ArrearsActionAPI.V1.Boundary;
 
 namespace ArrearsActionAPI
 {
@@ -33,7 +34,7 @@ namespace ArrearsActionAPI
 
             services.AddScoped<IArrearsActionUsecase, ArrearsActionUsecase>();
             services.AddScoped<IArrearsActionGateway, ArrearsActionGateway>();
-            services.AddTransient<IGetAractionsByPropRefRequestValidator, GetAractionsByPropRefRequestValidator>();
+            services.AddTransient<IFValidator<GetAractionsByPropRefRequest>, GetAractionsByPropRefRequestValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

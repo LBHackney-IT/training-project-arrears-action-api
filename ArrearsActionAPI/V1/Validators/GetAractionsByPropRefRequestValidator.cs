@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace ArrearsActionAPI.V1.Validators
 {
-    public class GetAractionsByPropRefRequestValidator : AbstractValidator<GetAractionsByPropRefRequest>, IGetAractionsByPropRefRequestValidator
+    public class GetAractionsByPropRefRequestValidator : AbstractValidator<GetAractionsByPropRefRequest>, IFValidator<GetAractionsByPropRefRequest>
     {
         public GetAractionsByPropRefRequestValidator()
         {

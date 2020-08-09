@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FV = FluentValidation.Results;
+using Moq;
+using FluentValidation;
+using ArrearsActionAPI.V1.Validators;
 
 namespace ArrearsActionAPI.UnitTests
 {
@@ -62,5 +65,12 @@ namespace ArrearsActionAPI.UnitTests
         }
 
         #endregion
+
+
+        public static void SetUp_MockValidatorSuccessResponse<ValidatorRequestType>(Mock<IFValidator<ValidatorRequestType>> mock_validator)
+        where ValidatorRequestType : class
+        {
+            mock_validator.Setup(v => v.Validate(It.IsAny<ValidatorRequestType>())).Returns(Generate_SuccessValidationResult());
+        }
     }
 }
