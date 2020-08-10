@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using ArrearsActionAPI.V1.Controllers;
 using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Usecases;
@@ -32,14 +33,11 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         [Test]
         public void Given_a_valid_request__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_calls_the_usecase()
         {
-            // unrelated setup
+            // arrange
             TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
 
-            // arrange
-            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
-
             // act
-            _controllerUnderTest.GetAractionsByPropRef(request);
+            _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             _mockUsecase.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
@@ -53,7 +51,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _mockGetByPropRefValidator.Setup(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>())).Returns(failed_validation_result);
 
             // act
-            _controllerUnderTest.GetAractionsByPropRef(new GetAractionsByPropRefRequest());
+            _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             _mockUsecase.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Never);
@@ -62,10 +60,8 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         [Test]
         public void Given_a_valid_request__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_calls_the_usecase_with_the_same_request_object()
         {
-            // unrelated setup
-            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
-
             // arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
             var request = TestHelper.Generate_GetAractionsByPropRefRequest();
 
             // act
@@ -78,15 +74,14 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         [Test]
         public void Given_a_successful_request__When_usecase_returns_its_result__Then_GetAractionsByPropRef_ArrearsActionController_wraps_it_up_And_returns_that_result_within_a_response_object()
         {
-            // unrelated setup
-            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
-
             // arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
             var usecase_result = new GetAractionsByPropRefResponse(TestHelper.Generate_GetAractionsByPropRefRequest(), TestHelper.Generate_ListOfArrearsActions(), DateTime.Now);
+
             _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns(usecase_result);
 
             // act
-            var response = _controllerUnderTest.GetAractionsByPropRef(new GetAractionsByPropRefRequest());
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             var response_value = (response as ObjectResult)?.Value;
@@ -100,14 +95,11 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         [Test]
         public void Given_a_request_When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_calls_GetAractionsByPropRefRequestValidator()
         {
-            // unrelated setup
+            // arrange
             TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
 
-            // arrange
-            var request = TestHelper.Generate_GetAractionsByPropRefRequest();
-
             // act
-            _controllerUnderTest.GetAractionsByPropRef(request);
+            _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             _mockGetByPropRefValidator.Verify(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
@@ -116,10 +108,9 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         [Test]
         public void Given_a_request_When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_calls_GetAractionsByPropRefRequestValidator_with_the_same_request_object()
         {
-            // unrelated setup
-            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
 
             // arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
             var request = TestHelper.Generate_GetAractionsByPropRefRequest();
 
             // act
@@ -131,16 +122,15 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
 
         #endregion
 
+        #region Responses - Controller tests
         [Test]
         public void Given_a_successful_request__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_returns_a_200_Ok_response()
         {
-            // unrelated setup
-            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
-            
             // arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
 
             // act
-            var response = _controllerUnderTest.GetAractionsByPropRef(new GetAractionsByPropRefRequest());
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             var response_type = response as ObjectResult;
@@ -159,7 +149,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _mockGetByPropRefValidator.Setup(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>())).Returns(failed_validation_result);
 
             // act
-            var response = _controllerUnderTest.GetAractionsByPropRef(new GetAractionsByPropRefRequest());
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
 
             // assert
             var response_type = response as ObjectResult;
@@ -178,23 +168,38 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             _mockGetByPropRefValidator.Setup(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>())).Returns(failed_validation_result);    //mock validator says that it has found errors
 
             //act
-            var response = _controllerUnderTest.GetAractionsByPropRef(new GetAractionsByPropRefRequest());
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
             var response_value = (response as ObjectResult).Value;
             var error_response = response_value as ErrorResponse;
 
             //assert
             Assert.NotNull(response_value);
 
-            Assert.IsInstanceOf<ErrorResponse>(response_value); // Not sure about this one, think this test could be split.
+            Assert.IsInstanceOf<ErrorResponse>(response_value);
             Assert.NotNull(response_value);
+        }
 
-            Assert.IsInstanceOf<string>(error_response.status);
-            Assert.NotNull(error_response.status);
-            Assert.AreEqual("fail", error_response.status);     // This part feels like more of an error object test rather than something that needs to be repeated on every fail case.
+        [Test]
+        public void Given_an_invalid_request__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_the_returned_Error_response_contains_a_list_of_errors() // no need to test the actual messages here, because that conversion process is tested in the ErrorFormatter tests
+        {
+            //arrange
+            var failed_validation_result = TestHelper.Generate_FailedValidationResult();
+            var validation_errors = failed_validation_result.Errors.ToList();
+            _mockGetByPropRefValidator.Setup(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>())).Returns(failed_validation_result);    //mock validator says that it has found errors
 
-            Assert.IsInstanceOf<List<string>>(error_response.errors);
-            Assert.NotNull(error_response.errors);                          // This part here is a different test.
-            Assert.AreEqual(failed_validation_result.Errors.Count, error_response.errors.Count);
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_value = (response as ObjectResult).Value;
+            var error_response = response_value as ErrorResponse;
+            var response_errors = error_response.errors;
+
+            //assert
+            Assert.NotNull(response_errors);
+            Assert.AreEqual(validation_errors.Count, response_errors.Count);
+            validation_errors.ForEach(
+                e => Assert.True(
+                    response_errors.Any(re => re.Contains(e.ErrorMessage))
+                    ));
         }
 
         [Test]
@@ -298,8 +303,8 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
 
             _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
 
-            var expected_error_message = expected_error_messages[0]; 
-            var expected_inner_error_message = expected_error_messages[1]; 
+            var expected_error_message = expected_error_messages[0];
+            var expected_inner_error_message = expected_error_messages[1];
 
             //act
             var response = _controllerUnderTest.GetAractionsByPropRef(null);
@@ -318,6 +323,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
 
             Assert.AreEqual(expected_error_message, actual_error_message);
             Assert.AreEqual(expected_inner_error_message, actual_inner_error_message);
-        }
+        } 
+        #endregion
     }
 }
