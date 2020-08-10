@@ -6,6 +6,7 @@ using ArrearsActionAPI.V1.Boundary;
 using ArrearsActionAPI.V1.Errors;
 using ArrearsActionAPI.V1.Usecases;
 using ArrearsActionAPI.V1.Validators;
+using ArrearsActionAPI.V1.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,18 +36,29 @@ namespace ArrearsActionAPI.V1.Controllers
         [Route("property-ref/{PropertyRef}")]
         public IActionResult GetAractionsByPropRef([FromRoute] GetAractionsByPropRefRequest request)
         {
-            var validation_result = _getByPropRefValidator.Validate(request);
-
-            if (validation_result.IsValid)
+            try
             {
-                var usecase_result = _arrearsActionUsecase.GetByPropRef(request);
+                var validation_result = _getByPropRefValidator.Validate(request);
 
-                return Ok(usecase_result); 
+                if (validation_result.IsValid)
+                {
+                    var usecase_result = _arrearsActionUsecase.GetByPropRef(request);
+
+                    return Ok(usecase_result);
+                }
+
+                return BadRequest(
+                        new ErrorResponse(validation_result.Errors)
+                        );
             }
-
-            return BadRequest(
-                    new ErrorResponse(validation_result.Errors)
-                    );
+            catch (Exception ex) when (ex.InnerException != null)
+            {
+                return StatusCode(500, new ErrorResponse(ex.Message, ex.InnerException.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorResponse(ex.Message));
+            }
         }
     }
 }

@@ -185,16 +185,139 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             //assert
             Assert.NotNull(response_value);
 
-            Assert.IsInstanceOf<ErrorResponse>(response_value);
+            Assert.IsInstanceOf<ErrorResponse>(response_value); // Not sure about this one, think this test could be split.
             Assert.NotNull(response_value);
 
             Assert.IsInstanceOf<string>(error_response.status);
             Assert.NotNull(error_response.status);
-            Assert.AreEqual("fail", error_response.status);
+            Assert.AreEqual("fail", error_response.status);     // This part feels like more of an error object test rather than something that needs to be repeated on every fail case.
 
             Assert.IsInstanceOf<List<string>>(error_response.errors);
-            Assert.NotNull(error_response.errors);
+            Assert.NotNull(error_response.errors);                          // This part here is a different test.
             Assert.AreEqual(failed_validation_result.Errors.Count, error_response.errors.Count);
+        }
+
+        [Test]
+        public void Given_an_unexpected_exception_is_thrown_in_the_usecase__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_500_status_code_response()
+        {
+            //Arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            var random_expected_exception = ErrorThrowerHelper.Generate_Error();
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
+
+            //Act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_result = (ObjectResult)response;
+
+            //Assert
+            Assert.NotNull(response);
+            Assert.NotNull(response_result);
+            Assert.AreEqual(500, response_result.StatusCode);
+        }
+
+        [Test]
+        public void Given_an_unexpected_exception_is_thrown_in_the_GetByPropRefValidator__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_500_status_code_response()
+        {
+            //Arrange
+            var random_expected_exception = ErrorThrowerHelper.Generate_Error();
+
+            _mockGetByPropRefValidator.Setup(v => v.Validate(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
+
+            //Act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_result = (ObjectResult)response;
+
+            //Assert
+            Assert.NotNull(response);
+            Assert.NotNull(response_result);
+            Assert.AreEqual(500, response_result.StatusCode);
+        }
+
+        [Test]
+        public void Given_an_unexpected_exception_is_thrown__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_an_Error_response()
+        {
+            //arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            var random_expected_exception = ErrorThrowerHelper.Generate_Error();
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
+
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_result = response as ObjectResult;
+            var response_content = response_result.Value;
+
+            //assert
+            Assert.NotNull(response);
+            Assert.NotNull(response_result);
+            Assert.IsInstanceOf<ErrorResponse>(response_content);
+            Assert.NotNull(response_content);
+        }
+
+        [Test]
+        public void Given_a_regular_unexpected_exception_is_thrown__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_corresponding_error_message()
+        {
+            //arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            (Exception random_expected_exception, List<string> expected_error_messages) = ErrorThrowerHelper
+                .Generate_ExceptionAndCorrespondinErrorMessages(ErrorThrowerHelper.ErrorThrowerOptions.SimpleErrors);
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
+
+            var expected_error_message = expected_error_messages[0];
+
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+
+            var response_result = response as ObjectResult;
+            var response_content = response_result.Value as ErrorResponse;
+
+            //assert
+
+            Assert.NotNull(response_content);
+            Assert.AreEqual(expected_error_messages.Count, response_content.errors.Count);
+            Assert.AreEqual(1, response_content.errors.Count);
+
+            var actual_error_message = response_content.errors[0];
+
+            Assert.AreEqual(expected_error_message, actual_error_message);
+        }
+
+        [Test]
+        public void Given_a_nested_unexpected_exception_is_thrown__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_corresponding_error_message__And_inner_error_message()
+        {
+            //arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            (Exception random_expected_exception, List<string> expected_error_messages) = ErrorThrowerHelper
+                .Generate_ExceptionAndCorrespondinErrorMessages(ErrorThrowerHelper.ErrorThrowerOptions.InnerErrors);
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(random_expected_exception);
+
+            var expected_error_message = expected_error_messages[0]; 
+            var expected_inner_error_message = expected_error_messages[1]; 
+
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+
+            var response_result = response as ObjectResult;
+            var response_content = response_result.Value as ErrorResponse;
+
+            //assert
+
+            Assert.NotNull(response_content);
+            Assert.AreEqual(expected_error_messages.Count, response_content.errors.Count);
+            Assert.AreEqual(2, response_content.errors.Count);
+
+            var actual_error_message = response_content.errors[0];
+            var actual_inner_error_message = response_content.errors[1];
+
+            Assert.AreEqual(expected_error_message, actual_error_message);
+            Assert.AreEqual(expected_inner_error_message, actual_inner_error_message);
         }
     }
 }
