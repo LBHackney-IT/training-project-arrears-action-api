@@ -18,7 +18,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Errors
             var error_response = new ErrorResponse();
 
             //assert
-            Assert.AreEqual(error_response.status, "fail");
+            Assert.AreEqual(error_response.Status, "fail");
         }
 
         [Test]
@@ -28,8 +28,8 @@ namespace ArrearsActionAPI.UnitTests.V1.Errors
             var error_response = new ErrorResponse();
 
             //assert
-            Assert.NotNull(error_response.errors);
-            Assert.Zero(error_response.errors.Count);
+            Assert.NotNull(error_response.Errors);
+            Assert.Zero(error_response.Errors.Count);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Errors
 
             //act
             var error_response = new ErrorResponse(expected_list_of_errors);
-            var actual_list_of_errors = error_response.errors;
+            var actual_list_of_errors = error_response.Errors;
 
             //assert
             Assert.NotNull(actual_list_of_errors);
@@ -59,9 +59,9 @@ namespace ArrearsActionAPI.UnitTests.V1.Errors
             var seven_parameter_error_response = new ErrorResponse(_faker.Random.Word(), _faker.Random.Word(), _faker.Random.Word(), _faker.Random.Word(), _faker.Random.Word(), _faker.Random.Word(), _faker.Random.Word());
 
             //assert
-            Assert.AreEqual(1, single_parameter_error_response.errors.Count);
-            Assert.AreEqual(4, four_parameter_error_response.errors.Count);
-            Assert.AreEqual(7, seven_parameter_error_response.errors.Count);
+            Assert.AreEqual(1, single_parameter_error_response.Errors.Count);
+            Assert.AreEqual(4, four_parameter_error_response.Errors.Count);
+            Assert.AreEqual(7, seven_parameter_error_response.Errors.Count);
         }
 
         [Test]
@@ -74,8 +74,8 @@ namespace ArrearsActionAPI.UnitTests.V1.Errors
             var error_response = new ErrorResponse(validation_failures_list);
 
             //assert
-            Assert.IsInstanceOf<List<string>>(error_response.errors);
-            Assert.AreEqual(validation_failures_list.Count, error_response.errors.Count);
+            Assert.IsInstanceOf<List<string>>(error_response.Errors);
+            Assert.AreEqual(validation_failures_list.Count, error_response.Errors.Count);
         }
     }
 }

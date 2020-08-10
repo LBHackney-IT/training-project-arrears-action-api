@@ -18,27 +18,27 @@ namespace ArrearsActionAPI.V1.Errors
 
     public class ErrorResponse
     {
-        public string status { get; set; } = "fail";
-        public List<string> errors { get; set; }
+        public string Status { get; set; } = "fail";
+        public List<string> Errors { get; set; }
 
         public ErrorResponse()
         {
-            errors = new List<string>();
+            Errors = new List<string>();
         }
 
         public ErrorResponse(List<string> errorList)
         {
-            errors = errorList;
+            Errors = errorList;
         }
 
         public ErrorResponse(params string[] errorStrings)
         {
-            errors = errorStrings.ToList();
+            Errors = errorStrings.ToList();
         }
 
         public ErrorResponse(IList<ValidationFailure> validationFailures)
         {
-            errors = ErrorMessagesFormatter.FormatValidationFailures(validationFailures);
+            Errors = ErrorMessagesFormatter.FormatValidationFailures(validationFailures);
         }
     }
 }

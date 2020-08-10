@@ -76,7 +76,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         {
             // arrange
             TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
-            var usecase_result = new GetAractionsByPropRefResponse(TestHelper.Generate_GetAractionsByPropRefRequest(), TestHelper.Generate_ListOfArrearsActions(), DateTime.Now);
+            var usecase_result = new GetAractionsByPropRefResponse(TestHelper.Generate_GetAractionsByPropRefRequest(), TestHelper.Generate_ListOfArrearsActions());
 
             _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns(usecase_result);
 
@@ -191,7 +191,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             var response = _controllerUnderTest.GetAractionsByPropRef(null);
             var response_value = (response as ObjectResult).Value;
             var error_response = response_value as ErrorResponse;
-            var response_errors = error_response.errors;
+            var response_errors = error_response.Errors;
 
             //assert
             Assert.NotNull(response_errors);
@@ -284,10 +284,10 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             //assert
 
             Assert.NotNull(response_content);
-            Assert.AreEqual(expected_error_messages.Count, response_content.errors.Count);
-            Assert.AreEqual(1, response_content.errors.Count);
+            Assert.AreEqual(expected_error_messages.Count, response_content.Errors.Count);
+            Assert.AreEqual(1, response_content.Errors.Count);
 
-            var actual_error_message = response_content.errors[0];
+            var actual_error_message = response_content.Errors[0];
 
             Assert.AreEqual(expected_error_message, actual_error_message);
         }
@@ -315,11 +315,11 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
             //assert
 
             Assert.NotNull(response_content);
-            Assert.AreEqual(expected_error_messages.Count, response_content.errors.Count);
-            Assert.AreEqual(2, response_content.errors.Count);
+            Assert.AreEqual(expected_error_messages.Count, response_content.Errors.Count);
+            Assert.AreEqual(2, response_content.Errors.Count);
 
-            var actual_error_message = response_content.errors[0];
-            var actual_inner_error_message = response_content.errors[1];
+            var actual_error_message = response_content.Errors[0];
+            var actual_inner_error_message = response_content.Errors[1];
 
             Assert.AreEqual(expected_error_message, actual_error_message);
             Assert.AreEqual(expected_inner_error_message, actual_inner_error_message);

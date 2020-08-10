@@ -20,7 +20,7 @@ namespace ArrearsActionAPI.V1.Usecases
         {
             var gateway_result = _arrearsActionGateway.GetByPropRef(request);
 
-            return new GetAractionsByPropRefResponse(request, gateway_result, DateTime.Now);
+            return new GetAractionsByPropRefResponse(request, gateway_result);
         }
     }
 }
