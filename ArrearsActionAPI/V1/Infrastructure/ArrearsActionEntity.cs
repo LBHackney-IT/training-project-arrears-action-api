@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Npgsql;
-using NpgsqlTypes;
 
 namespace ArrearsActionAPI.V1.Infrastructure
 {
@@ -13,7 +11,7 @@ namespace ArrearsActionAPI.V1.Infrastructure
         [Column("action_set")]          public int              action_set { get; set; }
         [Column("action_no")]           public int              action_no { get; set; }
         [Column("action_code")]         public string           action_code { get; set; }
-        [Column("action_date")]         public DateTime         action_date { get; set; }
+        [Column("action_date")]         public DateTime?        action_date { get; set; }
         [Column("action_balance")]      public decimal?         action_balance { get; set; }
         [Column("action_comment")]      public string           action_comment { get; set; }
         [Column("username")]            public string           username { get; set; }
@@ -22,7 +20,7 @@ namespace ArrearsActionAPI.V1.Infrastructure
         [Key]
         [Column("araction_sid")]        public int?             araction_sid { get; set; }
         [Column("action_deferred")]     public bool?            action_deferred { get; set; }
-        [Column("deferred_until")]      public DateTime         deferred_until { get; set; }
+        [Column("deferred_until")]      public DateTime?        deferred_until { get; set; }
         [Column("deferral_reason")]     public string           deferral_reason { get; set; }
         [Column("severity_level")]      public int?             severity_level { get; set; }
         [Column("action_nr_balance")]   public decimal?         action_nr_balance { get; set; }

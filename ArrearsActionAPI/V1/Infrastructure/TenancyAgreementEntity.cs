@@ -1,10 +1,6 @@
-﻿using NpgsqlTypes;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ArrearsActionAPI.V1.Infrastructure
 {
@@ -15,8 +11,8 @@ namespace ArrearsActionAPI.V1.Infrastructure
         [Column("tag_ref")]              public string          tag_ref { get; set; }
         [Column("prop_ref")]             public string          prop_ref { get; set; }
         [Column("house_ref")]            public string          house_ref { get; set; }
-        [Column("cot")]                  public DateTime        cot { get; set; }
-        [Column("eot")]                  public DateTime        eot { get; set; }
+        [Column("cot")]                  public DateTime?       cot { get; set; }
+        [Column("eot")]                  public DateTime?        eot { get; set; }
         [Column("spec_terms")]           public bool            spec_terms { get; set; }
         [Column("other_accounts")]       public bool            other_accounts { get; set; }
         [Column("active")]               public bool            active { get; set; }
