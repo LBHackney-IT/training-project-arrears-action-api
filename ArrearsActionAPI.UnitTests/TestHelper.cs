@@ -10,6 +10,7 @@ using FV = FluentValidation.Results;
 using Moq;
 using FluentValidation;
 using ArrearsActionAPI.V1.Validators;
+using ArrearsActionAPI.V1.Infrastructure;
 
 namespace ArrearsActionAPI.UnitTests
 {
@@ -17,13 +18,20 @@ namespace ArrearsActionAPI.UnitTests
     {
         private static Faker _faker = new Faker();
 
+        #region Requests
+
         public static GetAractionsByPropRefRequest Generate_GetAractionsByPropRefRequest()
         {
             var rand_prop_ref = _faker.Random.Hash().ToString();
-            return new GetAractionsByPropRefRequest() {
+            return new GetAractionsByPropRefRequest()
+            {
                 PropertyRef = rand_prop_ref
             };
-        }
+        } 
+
+        #endregion
+
+        #region Domain
 
         private static ArrearsAction Generate_ArrearsAction() //TODO: Generate with proper fields
         {
@@ -34,13 +42,16 @@ namespace ArrearsActionAPI.UnitTests
         {
             return Enumerable.Range(0, _faker.Random.Int(1, 10))
                 .Aggregate(
-                    new List<ArrearsAction>(), 
-                    (acc, _) => {
+                    new List<ArrearsAction>(),
+                    (acc, _) =>
+                    {
                         acc.Add(Generate_ArrearsAction());
                         return acc;
                     }
                 );
-        }
+        } 
+
+        #endregion
 
         #region Fake Validation Results
 
@@ -72,5 +83,27 @@ namespace ArrearsActionAPI.UnitTests
         {
             mock_validator.Setup(v => v.Validate(It.IsAny<ValidatorRequestType>())).Returns(Generate_SuccessValidationResult());
         }
+
+        #region EF Core Entities
+
+        public static ArrearsActionEntity Generate_ArrearsActionEntity()
+        {
+            return new ArrearsActionEntity()
+            {
+                tag_ref = "something",
+                action_code = _faker.Random.Word()
+            };
+        }
+
+        public static TenancyAgreementEntity Generate_TenancyAgreementEntity()
+        {
+            return new TenancyAgreementEntity()
+            {
+                tag_ref = "something_else",
+                prop_ref = _faker.Random.Word()
+            };
+        } 
+
+        #endregion
     }
 }
