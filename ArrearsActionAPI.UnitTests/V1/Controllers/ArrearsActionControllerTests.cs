@@ -123,6 +123,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
         #endregion
 
         #region Responses - Controller tests
+
         [Test]
         public void Given_a_successful_request__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_it_returns_a_200_Ok_response()
         {
@@ -200,6 +201,72 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
                 e => Assert.True(
                     response_errors.Any(re => re.Contains(e.ErrorMessage))
                     ));
+        }
+
+        [Test]
+        public void Given_a_NotFoundException_exception_is_thrown_within_deeper_flow__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_404_status_code_response()
+        {
+            //Arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            var not_found_exception = new NotFoundException();
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(not_found_exception); // doesn't matter where so long it's not within the controller
+
+            //Act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_result = (ObjectResult)response;
+
+            //Assert
+            Assert.NotNull(response);
+            Assert.NotNull(response_result);
+            Assert.AreEqual(404, response_result.StatusCode);
+        }
+
+        [Test]
+        public void Given_a_NotFoundException_exception_is_thrown_within_deeper_flow__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_an_Error_response()
+        {
+            //Arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+
+            var not_found_exception = new NotFoundException();
+
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(not_found_exception);
+
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+            var response_result = response as ObjectResult;
+            var response_content = response_result.Value;
+
+            //assert
+            Assert.NotNull(response);
+            Assert.NotNull(response_result);
+            Assert.IsInstanceOf<ErrorResponse>(response_content);
+            Assert.NotNull(response_content);
+        }
+
+        [Test]
+        public void Given_a_NotFoundException_exception_is_thrown_within_deeper_flow__When_GetAractionsByPropRef_ArrearsActionController_method_is_called__Then_controller_returns_corresponding_error_message()
+        {
+            //arrange
+            TestHelper.SetUp_MockValidatorSuccessResponse(_mockGetByPropRefValidator);
+            var random_expected_error_message = ErrorThrowerHelper.Generate_Error().Message;
+            var not_found_exception = new NotFoundException(random_expected_error_message);
+            _mockUsecase.Setup(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Throws(not_found_exception);
+
+            //act
+            var response = _controllerUnderTest.GetAractionsByPropRef(null);
+
+            var response_result = response as ObjectResult;
+            var response_content = response_result.Value as ErrorResponse;
+
+            //assert
+
+            Assert.NotNull(response_content);
+
+            var actual_error_message = response_content.Errors.FirstOrDefault();
+
+            Assert.AreEqual(random_expected_error_message, actual_error_message);
         }
 
         [Test]
@@ -323,7 +390,8 @@ namespace ArrearsActionAPI.UnitTests.V1.Controllers
 
             Assert.AreEqual(expected_error_message, actual_error_message);
             Assert.AreEqual(expected_inner_error_message, actual_inner_error_message);
-        } 
+        }
+
         #endregion
     }
 }

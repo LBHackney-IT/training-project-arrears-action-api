@@ -48,8 +48,6 @@ namespace ArrearsActionAPI.UnitTests.V1.Gateways
             TestDelegate test_delegate = () => _gatewayUnderTest.GetByPropRef(prop_ref);
 
             // assert
-            Assert.Zero(_coreHousingContext.TenancyAgreementEntities.Count());
-
             var ex = Assert.Throws<NotFoundException>(test_delegate);
 
             Assert.AreEqual($"Tenancy agreement resource was not found.", ex.Message);
@@ -106,7 +104,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Gateways
 
             // assert
             Assert.NotNull(gateway_response);
-            Assert.Equals(10, gateway_response.Count);
+            Assert.AreEqual(10, gateway_response.Count);
             Assert.True(gateway_response.All(a => a.TenancyAgreementRef == tenancy_agreement_1.tag_ref));
         }
 
@@ -121,14 +119,14 @@ namespace ArrearsActionAPI.UnitTests.V1.Gateways
             var tenancy_agreement_2 = Generate_and_AddTenancyAgreementEntityToDatabase(prop_ref); // prop_ref -> tag_ref is 1 to many relationship
             Generate_and_AddPairedArrearsActions(tenancy_agreement_2.tag_ref, 35);
 
-            Generate_and_AddPairedArrearsActions("not matching", 15);
+            Generate_and_AddPairedArrearsActions("not matching", 17);
 
             // act
             var gateway_response = _gatewayUnderTest.GetByPropRef(prop_ref);
 
             // assert
             Assert.NotNull(gateway_response);
-            Assert.Equals(55, gateway_response.Count); // result count is the sum of related aractions 20 + 35
+            Assert.AreEqual(55, gateway_response.Count); // result count is the sum of related aractions 20 + 35
 
             // all records are either tag_ref 1, or tag_ref 2
             Assert.True(gateway_response.All(a =>
@@ -145,7 +143,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Gateways
 
         private void Generate_and_AddPairedArrearsActions(string tenanagree_ref, int quantity)
         {
-            var arrears_action_list = TestHelper.Generate_Many_ArrearsActionEntity(10);
+            var arrears_action_list = TestHelper.Generate_Many_ArrearsActionEntity(quantity);
             arrears_action_list.ForEach(a => a.tag_ref = tenanagree_ref);
             _coreHousingContext.ArrearsActionEntities.AddRange(arrears_action_list);
             _coreHousingContext.SaveChanges();

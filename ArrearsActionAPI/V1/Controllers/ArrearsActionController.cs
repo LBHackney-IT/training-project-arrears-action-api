@@ -51,6 +51,10 @@ namespace ArrearsActionAPI.V1.Controllers
                         new ErrorResponse(validation_result.Errors)
                         );
             }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new ErrorResponse(ex.Message));
+            }
             catch (Exception ex) when (ex.InnerException != null)
             {
                 return StatusCode(500, new ErrorResponse(ex.Message, ex.InnerException.Message));
