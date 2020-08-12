@@ -8,7 +8,6 @@ namespace ArrearsActionAPI.V1.Domain
     public class ArrearsAction
     {
         public string TenancyAgreementRef { get; set; }
-        public string PropertyReference { get; set; }
         public int ActionSet { get; set; }
         public int ActionNo { get; set; }
         public string ActionCode { get; set; }
