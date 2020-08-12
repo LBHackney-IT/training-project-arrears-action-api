@@ -9,7 +9,7 @@ namespace ArrearsActionAPI.V1.Gateways
 {
     public class ArrearsActionGateway : IArrearsActionGateway
     {
-        public List<ArrearsAction> GetByPropRef(GetAractionsByPropRefRequest request)
+        public List<ArrearsAction> GetByPropRef(string prop_ref)
         {
             throw new NotImplementedException();
         }

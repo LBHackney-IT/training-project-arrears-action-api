@@ -6,6 +6,6 @@ namespace ArrearsActionAPI.V1.Gateways
 {
     public interface IArrearsActionGateway
     {
-        List<ArrearsAction> GetByPropRef(GetAractionsByPropRefRequest request);
+        List<ArrearsAction> GetByPropRef(string prop_ref);
     }
 }

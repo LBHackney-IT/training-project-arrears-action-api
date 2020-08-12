@@ -25,10 +25,10 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
             // arrange
 
             // act
-            _usecaseUnderTest.GetByPropRef(null);
+            _usecaseUnderTest.GetByPropRef(new GetAractionsByPropRefRequest());
 
             // assert
-            _mockGateway.Verify(u => u.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>()), Times.Once);
+            _mockGateway.Verify(u => u.GetByPropRef(It.IsAny<string>()), Times.Once);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
             _usecaseUnderTest.GetByPropRef(request);
 
             // assert
-            _mockGateway.Verify(u => u.GetByPropRef(It.Is<GetAractionsByPropRefRequest>(r => r == request)), Times.Once);
+            _mockGateway.Verify(u => u.GetByPropRef(It.Is<string>(r => r == request.PropertyRef)), Times.Once);
         }
 
         [Test]
@@ -49,10 +49,10 @@ namespace ArrearsActionAPI.UnitTests.V1.Usecases
         {
             // arrange
             var gateway_response = TestHelper.Generate_ListOfArrearsActions();
-            _mockGateway.Setup(g => g.GetByPropRef(It.IsAny<GetAractionsByPropRefRequest>())).Returns(gateway_response);
+            _mockGateway.Setup(g => g.GetByPropRef(It.IsAny<string>())).Returns(gateway_response);
 
             // act
-            var usecase_response = _usecaseUnderTest.GetByPropRef(null);
+            var usecase_response = _usecaseUnderTest.GetByPropRef(new GetAractionsByPropRefRequest());
 
             // assert
             Assert.AreSame(usecase_response.ArrearsActions, gateway_response);
