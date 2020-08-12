@@ -93,12 +93,17 @@ namespace ArrearsActionAPI.UnitTests
 
         public static GetAractionsByPropRefRequest Generate_GetAractionsByPropRefRequest()
         {
-            var rand_prop_ref = _faker.Random.Hash().ToString();
+            var rand_prop_ref = Generate_PropRef();
             return new GetAractionsByPropRefRequest()
             {
                 PropertyRef = rand_prop_ref
             };
-        } 
+        }
+
+        public static string Generate_PropRef()
+        {
+            return _faker.Random.Hash().ToString();
+        }
 
         #endregion
 
@@ -162,7 +167,7 @@ namespace ArrearsActionAPI.UnitTests
             return _fakerArrearsActionEntity.Generate();
         }
 
-        public static List<ArrearsActionEntity> Generate_ArrearsActionEntity(int quantity = 1)
+        public static List<ArrearsActionEntity> Generate_Many_ArrearsActionEntity(int quantity = 1)
         {
             return _fakerArrearsActionEntity.Generate(quantity);
         }
