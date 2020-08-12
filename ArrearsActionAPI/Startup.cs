@@ -13,13 +13,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using FluentValidation.AspNetCore;
 using ArrearsActionAPI.V1.Boundary;
+using ArrearsActionAPI.V1.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArrearsActionAPI
 {
     public class Startup
     {
-        public const string AppS3BucketKey = "AppS3Bucket";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,8 +32,31 @@ namespace ArrearsActionAPI
         {
             services.AddMvc().AddFluentValidation().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddScoped<IArrearsActionUsecase, ArrearsActionUsecase>();
+            ConfigureDbContext(services);
+            RegisterGateways(services);
+            RegisterUseCases(services);
+            RegisterValidators(services);
+        }
+
+        private static void ConfigureDbContext(IServiceCollection services)
+        {
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new ArgumentNullException("connectionString");
+
+            services.AddDbContext<CoreHousingContext>(o => o.UseNpgsql(connectionString));
+        }
+
+        private static void RegisterGateways(IServiceCollection services)
+        {
             services.AddScoped<IArrearsActionGateway, ArrearsActionGateway>();
+        }
+
+        private static void RegisterUseCases(IServiceCollection services)
+        {
+            services.AddScoped<IArrearsActionUsecase, ArrearsActionUsecase>();
+        }
+
+        private static void RegisterValidators(IServiceCollection services)
+        {
             services.AddTransient<IFValidator<GetAractionsByPropRefRequest>, GetAractionsByPropRefRequestValidator>();
         }
 
