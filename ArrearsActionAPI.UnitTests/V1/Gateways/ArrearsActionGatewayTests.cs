@@ -1,11 +1,6 @@
 ﻿using ArrearsActionAPI.V1.Gateways;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Bogus;
 using ArrearsActionAPI.V1.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ArrearsActionAPI.V1.Errors;
 
@@ -113,6 +108,36 @@ namespace ArrearsActionAPI.UnitTests.V1.Gateways
             Assert.NotNull(gateway_response);
             Assert.Equals(10, gateway_response.Count);
             Assert.True(gateway_response.All(a => a.TenancyAgreementRef == tenancy_agreement_1.tag_ref));
+        }
+
+        [Test]
+        public void Given_the_database_contains_Multiple_matching_TenancyAgreement_records__And_they_match_some_Existing_ArrearsActions__When_ArrearsActionGateway_GetByPropRef_method_is_called__Then_it_returns_ArrearsActions_corresponding_to_both_TenancyAgreements()
+        {
+            // arrange
+            var prop_ref = TestHelper.Generate_PropRef();
+            var tenancy_agreement_1 = Generate_and_AddTenancyAgreementEntityToDatabase(prop_ref);
+            Generate_and_AddPairedArrearsActions(tenancy_agreement_1.tag_ref, 20);
+
+            var tenancy_agreement_2 = Generate_and_AddTenancyAgreementEntityToDatabase(prop_ref); // prop_ref -> tag_ref is 1 to many relationship
+            Generate_and_AddPairedArrearsActions(tenancy_agreement_2.tag_ref, 35);
+
+            Generate_and_AddPairedArrearsActions("not matching", 15);
+
+            // act
+            var gateway_response = _gatewayUnderTest.GetByPropRef(prop_ref);
+
+            // assert
+            Assert.NotNull(gateway_response);
+            Assert.Equals(55, gateway_response.Count); // result count is the sum of related aractions 20 + 35
+
+            // all records are either tag_ref 1, or tag_ref 2
+            Assert.True(gateway_response.All(a =>
+                a.TenancyAgreementRef == tenancy_agreement_1.tag_ref ||
+                a.TenancyAgreementRef == tenancy_agreement_2.tag_ref
+            ));
+
+            Assert.True(gateway_response.Any(a => a.TenancyAgreementRef == tenancy_agreement_1.tag_ref)); // records contain tag_ref 1
+            Assert.True(gateway_response.Any(a => a.TenancyAgreementRef == tenancy_agreement_2.tag_ref)); // records contain tag_ref 2
         }
 
 
