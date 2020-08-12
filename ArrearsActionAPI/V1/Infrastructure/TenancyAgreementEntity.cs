@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ArrearsActionAPI.V1.Infrastructure
 {
-    [Table("tenagree")]
+    [Table("tenagree", Schema = "dbo")]
     public class TenancyAgreementEntity
     {
         [Key]

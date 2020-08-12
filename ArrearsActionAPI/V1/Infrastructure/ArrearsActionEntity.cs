@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ArrearsActionAPI.V1.Infrastructure
 {
-    [Table("araction")]
+    [Table("araction", Schema = "dbo")]
     public class ArrearsActionEntity
     {
         [Column("tag_ref")]             public string           tag_ref { get; set; }

@@ -40,7 +40,7 @@ namespace ArrearsActionAPI
 
         private static void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new ArgumentNullException("connectionString");
+            var connectionString = Environment.GetEnvironmentVariable("CH_CONNECTION_STRING") ?? throw new ArgumentNullException("connectionString");
 
             services.AddDbContext<CoreHousingContext>(o => o.UseNpgsql(connectionString));
         }
