@@ -7,7 +7,7 @@
     "AspNetCoreFunction": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
-        "Handler": "LambdaTestApp::LambdaTestApp.LambdaEntryPoint::FunctionHandlerAsync",
+        "Handler": "ArrearsActions::ArrearsActions.LambdaEntryPoint::FunctionHandlerAsync",
         "Runtime": "dotnetcore2.1",
         "CodeUri": "",
         "MemorySize": 256,
