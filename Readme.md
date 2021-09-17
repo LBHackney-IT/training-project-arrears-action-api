@@ -1,3 +1,4 @@
-A training project, but at the same time workplace based project for college.
+# Arrears Action API
 
-Will add proper description some time later.
+An AWS Serverless .NET API written using AWS Lambda template. Currently has only a signle endpoint that returns an Arrears Actions information
+for a given property reference. This API was a training project, which got cancelled, hence no more endpoints.
